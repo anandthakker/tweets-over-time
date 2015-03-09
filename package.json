@@ -1,0 +1,20 @@
+{
+  "name": "tweets-over-time",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anand Thakker <vestibule@anandthakker.net> (http://anandthakker.net)",
+  "license": "ISC",
+  "dependencies": {
+    "level-mapped-index": "^0.5.3",
+    "level-sublevel": "^6.4.6",
+    "leveldown": "^0.10.4",
+    "levelup": "^0.19.0",
+    "JSONStream": "^0.10.0",
+    "next-stream": "^2.2.2",
+    "through2": "^0.6.3"
+  }
+}
