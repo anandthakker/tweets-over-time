@@ -5,7 +5,7 @@ The (undocumented, unsupported) [URL tweet count endpoint][1] doesn't provide an
 and save them, and then let you query for all the known counts of a given URL.
 
 
-# Install
+# Install it
 
 Needs a version of Node supported by [levelDOWN][2] (tested on 0.10).
 
@@ -15,55 +15,68 @@ cd [your dir]
 npm install
 ```
 
-# Run
+# Run it
 
 ```
 node index.js
 ```
 
-# Use
+# Use it (TL;DR version)
 
-The first time you ask for the counts for `https://github.com`, it doesn't give you 
-any, since it hasn't started tracking them yet.
+## `GET /count?url=...`
 
+Get the collected count data for the given URL.  If the URL isn't yet being
+tracked, add it to the list of URLs to track.
+
+## `GET /fetch`
+
+Trigger the server to fetch tweet count for *all* tracked URLs.
+
+
+# Use it (full version)
+
+Ask for the counts for a given URL like so:
 ```bash
 curl http://localhost:3000/count?url=https://github.com
 ```
-Output:
+
+The first time you ask for a given URL, it doesn't give you any tweet counts,
+since it hasn't started tracking them yet.  E.g., the first response will look
+like:
+
 ```
 {"url":"https://github.com","since":"Mon Mar 09 2015 14:59:52 GMT-0700 (PDT)","counts":[]}
 ```
 
-
-But now, `https://github.com` is being tracked.  Tell the server to fetch data
-from the twitter endpoint like so:
+But now, `https://github.com` is being tracked. Tell the server to fetch data
+from the twitter endpoint at any time like so:
 
 ```bash
 curl http://localhost:3000/fetch
 ```
+
 Output:
 ```
 Mon Mar 09 2015 15:02:02 GMT-0700 (PDT) Fetching count for https://github.com
 ```
 
-Now try getting the count again, with the result:
+Now if we try getting the count again (`curl http://localhost:3000/count?url=https://github.com`), we get count data:
 
 ```javascript
 {
   "url": "https://github.com",
   "since": "Mon Mar 09 2015 14:59:52 GMT-0700 (PDT)",
   "counts": [
-    {"date":"Mon Mar 09 2015 14:59:52 GMT-0700 (PDT)","count":"10"},
-    {"date":"Mon Mar 09 2015 15:02:02 GMT-0700 (PDT)","count":"10"}
+    {"date":"Mon Mar 09 2015 14:59:52 GMT-0700 (PDT)","count":"36812"},
+    {"date":"Mon Mar 09 2015 15:02:02 GMT-0700 (PDT)","count":"36812"}
   ]
 }
 ```
 
-(Note: there are two counts here because, actually, immediately after adding the
-URL to the list of ones to track, the server does an initial fetch, and then, in
-this example, we triggered another one just a couple minutes later.)
-
-
+(Why are there *two* counts here?  I didn't mention it before, but immediately 
+after adding the URL to the list of ones to track, the server does an initial 
+fetch just for that URL.  Then, in this example, we triggered another one just a
+couple minutes later.)
 
 
 
