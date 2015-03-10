@@ -1,10 +1,12 @@
 
 var http = require('http')
+var https = require('https')
 var url = require('url')
 var qs = require('querystring')
 
 var levelup = require('levelup')
 var sublevel = require('level-sublevel')
+var request = require('request')
 var JSONStream = require('JSONStream')
 var next = require('next-stream')
 var through = require('through2')
@@ -20,9 +22,15 @@ levelup('./data/tweets', function(err, basedb) {
 
   // fetch the twitter count for the given url and store it
   function fetch(earl, cb) {
-    // TODO: actually hit the twitter endpoint
-    tweets.sublevel(earl).put((new Date()).toString(), 10, function(err) {
-      if(err) console.error(err)
+    request({
+      url: 'https://cdn.api.twitter.com/1/urls/count.json',
+      qs: { url: earl },
+      json: true
+    }, function(error, res, body) {
+      if(error) console.error(error)
+      else tweets.sublevel(earl).put((new Date()).toString(), body.count, function(err) {
+        if(err) console.error(err)
+      })
     })
   }
   
