@@ -11,7 +11,7 @@ var JSONStream = require('JSONStream')
 var next = require('next-stream')
 var through = require('through2')
 
-levelup('./data/tweets', function(err, basedb) {
+levelup('./tweets.db', function(err, basedb) {
   
   if(err) throw err;
   
